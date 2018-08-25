@@ -1,40 +1,16 @@
 import React from "react";
-import { ScrollView, Text, Button } from "react-native";
-
+import { ScrollView, Text, Button, TouchableOpacity } from "react-native";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+import { format } from "date-fns";
 import { ListItem } from "../../components/ListItem";
+import { FETCH_RESERVATIONS } from "../../queries";
 
 type Props = {};
 
-export default class ReservationsScreen extends React.Component<Props> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      reservations: [
-        {
-          id: "1",
-          name: "John Doe",
-          hotelName: "Hilton Dallas",
-          arrivalDate: new Date("December 17, 2018 08:24:00"),
-          departureDate: new Date("December 19, 2018 10:24:00")
-        },
-        {
-          id: "2",
-          name: "Jane Smith",
-          hotelName: "Hilton New York",
-          arrivalDate: new Date("January 3, 2019 14:24:00"),
-          departureDate: new Date("January 6, 2019 09:24:00")
-        },
-        {
-          id: "3",
-          name: "Mike Hase",
-          hotelName: "Hilton Dallas",
-          arrivalDate: new Date("March 5, 2019 03:24:00"),
-          departureDate: new Date("March 10, 2019 11:24:00")
-        }
-      ]
-    };
-  }
+const dateFormat = "MMM D";
 
+export default class ReservationsScreen extends React.Component<Props> {
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: "Reservations",
@@ -47,18 +23,40 @@ export default class ReservationsScreen extends React.Component<Props> {
     };
   };
 
-  render() {
-    return (
-      <ScrollView>
-        {!!this.state.reservations &&
-          this.state.reservations.map(reservation => (
+  fetchReservations = () => (
+    <Query query={FETCH_RESERVATIONS}>
+      {({ loading, error, data }) => {
+        if (loading) return <Text>...Loading</Text>;
+        if (error) return <Text>Error :(</Text>;
+
+        return data.reservations.map(reservation => (
+          <TouchableOpacity
+            key={reservation.id}
+            onPress={() =>
+              this.props.navigation.navigate("ReservationDetails", reservation)
+            }
+          >
             <ListItem
-              key={reservation.id}
               primaryText={reservation.name}
               secondaryText={reservation.hotelName}
+              rightText={`${format(
+                reservation.arrivalDate,
+                dateFormat
+              )} - ${format(reservation.departureDate, dateFormat)}`}
             />
-          ))}
-      </ScrollView>
-    );
+          </TouchableOpacity>
+        ));
+      }}
+    </Query>
+  );
+
+  componentDidUpdate() {
+    {
+      this.fetchReservations();
+    }
+  }
+
+  render() {
+    return <ScrollView>{this.fetchReservations()}</ScrollView>;
   }
 }

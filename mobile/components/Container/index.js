@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import { View } from "react-native";
 
@@ -17,7 +19,17 @@ export const Container = props => (
       flex: props.flex,
       flexDirection: props.flexDirection,
       justifyContent: props.justifyContent,
-      alignItems: props.alignItems
+      alignItems: props.alignItems,
+      alignSelf: props.alignSelf,
+      backgroundColor: props.backgroundColor,
+      borderRadius: props.borderRadius,
+      position: props.position,
+      top: props.top,
+      bottom: props.bottom,
+      left: props.left,
+      right: props.right,
+      width: props.width,
+      height: props.height
     }}
   >
     {props.children}

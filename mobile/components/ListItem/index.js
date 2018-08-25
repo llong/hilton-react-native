@@ -10,7 +10,7 @@ export class ListItem extends React.PureComponent {
           <Text style={styles.secondaryText}>{this.props.secondaryText}</Text>
         </View>
         <View style={styles.right}>
-          <Text>{this.props.rightText}</Text>
+          <Text style={styles.secondaryText}>{this.props.rightText}</Text>
         </View>
       </View>
     );
@@ -20,13 +20,16 @@ export class ListItem extends React.PureComponent {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFFFFF",
-    padding: 8
+    padding: 8,
+    flexDirection: "row",
+    alignItems: "center"
   },
   left: {
-    flex: 2
+    flex: 1
   },
   right: {
-    flex: 1
+    flex: 1,
+    alignItems: "flex-end"
   },
   primaryText: {
     fontSize: 16,

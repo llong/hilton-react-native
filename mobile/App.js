@@ -7,24 +7,37 @@
  */
 
 import React, { Component } from "react";
-import { Platform, StyleSheet, Text, View } from "react-native";
 import { createStackNavigator } from "react-navigation";
+import { ApolloProvider } from "react-apollo";
+import ApolloClient from "apollo-boost";
 
 import ReservationsScreen from "./screens/Reservations";
 import NewReservationScreen from "./screens/NewReservation";
+import ReservationDetailsScreen from "./screens/ReservationDetails";
+
+const client = new ApolloClient({
+  uri: "http://localhost:4000/graphql"
+});
 
 const RootState = createStackNavigator(
   {
     Home: ReservationsScreen,
-    NewReservation: NewReservationScreen
+    NewReservation: NewReservationScreen,
+    ReservationDetails: ReservationDetailsScreen
   },
   {
     initialRouteName: "Home"
   }
 );
 
-export default class App extends React.Component {
+type Props = {};
+
+export default class App extends React.Component<Props> {
   render() {
-    return <RootState />;
+    return (
+      <ApolloProvider client={client}>
+        <RootState />
+      </ApolloProvider>
+    );
   }
 }

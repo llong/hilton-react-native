@@ -1,34 +1,34 @@
-const graphql = require("graphql");
-const _ = require("lodash");
+import { find } from "lodash/find";
+import uuid from "uuid";
 
-const {
+import {
   GraphQLObjectType,
   GraphQLString,
   GraphQLSchema,
   GraphQLID,
   GraphQLList
-} = graphql;
+} from "graphql";
 
 // Dummy Data
 const reservations = [
   {
-    id: "1",
+    id: uuid.v4(),
     name: "John Doe",
     hotelName: "Hilton Dallas",
     arrivalDate: new Date("December 17, 2018 08:24:00"),
     departureDate: new Date("December 19, 2018 10:24:00")
   },
   {
-    id: "2",
+    id: uuid.v4(),
     name: "Jane Smith",
     hotelName: "Hilton New York",
     arrivalDate: new Date("January 3, 2019 14:24:00"),
     departureDate: new Date("January 6, 2019 09:24:00")
   },
   {
-    id: "3",
-    name: "John Doe",
-    hotelName: "Hilton Dallas",
+    id: uuid.v4(),
+    name: "Cathy Long",
+    hotelName: "Hilton Cebu",
     arrivalDate: new Date("March 5, 2019 03:24:00"),
     departureDate: new Date("March 10, 2019 11:24:00")
   }
@@ -53,7 +53,7 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         // code to get data from db / other source
-        return _.find(reservations, { id: args.id });
+        return find(reservations, { id: args.id });
       }
     },
     reservations: {
@@ -65,6 +65,32 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
+const Mutation = new GraphQLObjectType({
+  name: "Mutation",
+  fields: {
+    addReservation: {
+      type: ReservationType,
+      args: {
+        name: { type: GraphQLString },
+        hotelName: { type: GraphQLString },
+        arrivalDate: { type: GraphQLString },
+        departureDate: { type: GraphQLString }
+      },
+      resolve(parent, args) {
+        const reservation = {
+          id: uuid.v4(),
+          name: args.name,
+          hotelName: args.hotelName,
+          arrivalDate: args.arrivalDate,
+          departureDate: args.departureDate
+        };
+        reservations.push(reservation);
+      }
+    }
+  }
+});
+
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutation
 });

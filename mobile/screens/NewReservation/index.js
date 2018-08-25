@@ -1,22 +1,21 @@
 import React from "react";
-import {
-  View,
-  Text,
-  DatePickerIOS,
-  Modal,
-  TouchableHighlight
-} from "react-native";
+import { format } from "date-fns";
+import { Mutation } from "react-apollo";
 
 import { TextInput } from "../../components/TextInput";
 import { Container } from "../../components/Container";
 import { Button } from "../../components/Button";
 
-import { format } from "date-fns";
+import { DateModal } from "./components/DateModal";
+
+import { ADD_RESERVATION, FETCH_RESERVATIONS } from "../../queries";
 
 export default class NewReservationScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: "",
+      hotelName: "",
       arrivalDate: new Date(),
       departureDate: new Date(),
       arrivalModalVisible: false,
@@ -34,67 +33,81 @@ export default class NewReservationScreen extends React.Component {
 
   setDepartureDate = newDate => {
     this.setState({ departureDate: newDate });
-    console.log(newDate);
   };
 
+  addReservation = () => (
+    <Mutation mutation={ADD_RESERVATION}>
+      {(addReservation, { data }) => (
+        <Button
+          onPress={() => {
+            addReservation({
+              variables: {
+                name: this.state.name,
+                hotelName: this.state.hotelName,
+                arrivalDate: this.state.arrivalDate,
+                departureDate: this.state.departureDate
+              },
+              refetchQueries: [{ query: FETCH_RESERVATIONS }]
+            });
+            const clearState = {
+              name: "",
+              hotelName: "",
+              arrivalDate: new Date(),
+              departureDate: new Date(),
+              arrivalModalVisible: false,
+              departureModalVisible: false
+            };
+            this.setState(clearState);
+            this.props.navigation.navigate("Home");
+          }}
+        >
+          Add Reservation
+        </Button>
+      )}
+    </Mutation>
+  );
+
   render() {
+    const { name, hotelName, arrivalDate, departureDate } = this.state;
     return (
       <Container flex={1} padding={8}>
-        <TextInput placeholder="name" />
-        <TextInput placeholder="name" />
+        <TextInput
+          placeholder="Enter your name..."
+          value={name}
+          onChangeText={val => this.setState({ name: val })}
+        />
+        <TextInput
+          placeholder="Enter hotel name..."
+          value={hotelName}
+          onChangeText={val => this.setState({ hotelName: val })}
+        />
         <Button
           onPress={() => this.setState({ arrivalModalVisible: true })}
-        >{`Arrival Date: ${format(
-          this.state.arrivalDate,
-          "MMM D, YYYY"
-        )}`}</Button>
+        >{`Arrival Date: ${format(arrivalDate, "MMM D, YYYY")}`}</Button>
 
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.arrivalModalVisible}
-        >
-          <Container margin={8} flex={1} justifyContent="flex-end">
-            <Text>Set Arrival Date</Text>
-            <DatePickerIOS
-              date={this.state.arrivalDate}
-              onDateChange={this.setArrivalDate}
-            />
-            <Button
-              onPress={() => this.setState({ arrivalModalVisible: false })}
-            >
-              Set Arrival Date
-            </Button>
-          </Container>
-        </Modal>
+        <DateModal
+          modalVisible={this.state.arrivalModalVisible}
+          title="Set Arrival Date"
+          date={this.state.arrivalDate}
+          onDateChange={newDate => this.setState({ arrivalDate: newDate })}
+          closeModal={() => this.setState({ arrivalModalVisible: false })}
+          buttonLabel="Set Arrival Date"
+        />
 
         <Button
           onPress={() => this.setState({ departureModalVisible: true })}
-        >{`Departure Date: ${format(
-          this.state.departureDate,
-          "MMM D, YYYY"
-        )}`}</Button>
+        >{`Departure Date: ${format(departureDate, "MMM D, YYYY")}`}</Button>
 
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.departureModalVisible}
-        >
-          <Container margin={8} flex={1} justifyContent="flex-end">
-            <Text>Set Departure Date</Text>
-            <DatePickerIOS
-              date={this.state.departureDate}
-              onDateChange={this.setDepartureDate}
-            />
-            <Button
-              onPress={() => this.setState({ departureModalVisible: false })}
-            >
-              Set Departure Date
-            </Button>
-          </Container>
-        </Modal>
+        <DateModal
+          modalVisible={this.state.departureModalVisible}
+          title="Set Departure Date"
+          date={this.state.departureDate}
+          onDateChange={newDate => this.setState({ departureDate: newDate })}
+          closeModal={() => this.setState({ departureModalVisible: false })}
+          buttonLabel="Set Departure Date"
+        />
 
-        <Button>Book Reservation</Button>
+        {this.addReservation()}
       </Container>
     );
   }
