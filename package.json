@@ -4,8 +4,7 @@
   "description": "Coding challenge for Hilton Hotel developer position.",
   "main": "server/server.js",
   "scripts": {
-    "start:server": "nodemon server/server.js",
-    "start": "node mobile/node_modules/react-native/local-cli/cli.js start"
+    "start": "nodemon server/server.js"
   },
   "author": "Lewis Long",
   "license": "MIT",
