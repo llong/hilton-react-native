@@ -1,6 +1,7 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * Mobile App for Hilton Code Test
+ * Author: Lewis Long
+ * Created: 08/24/2018
  *
  * @format
  * @flow

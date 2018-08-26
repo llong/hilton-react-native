@@ -1,0 +1,13 @@
+#Default GitHub
+Host personal
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_llong_rsa
+
+#Default Work
+Host work
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_rsa
+
+#IdentitiesOnly yes
