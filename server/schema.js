@@ -10,7 +10,7 @@ import {
 } from "graphql";
 
 // Dummy Data
-const reservations = [
+let reservations = [
   {
     id: uuid.v4(),
     name: "John Doe",
@@ -85,6 +85,38 @@ const Mutation = new GraphQLObjectType({
           departureDate: args.departureDate
         };
         reservations.push(reservation);
+      }
+    },
+    removeReservation: {
+      type: ReservationType,
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        reservations = reservations.filter(res => res.id !== args.id);
+      }
+    },
+    updateReservation: {
+      type: ReservationType,
+      args: {
+        id: { type: GraphQLID },
+        name: { type: GraphQLString },
+        hotelName: { type: GraphQLString },
+        arrivalDate: { type: GraphQLString },
+        departureDate: { type: GraphQLString }
+      },
+      resolve(parent, args) {
+        reservations = reservations.map(res => {
+          if (res.id === args.id) {
+            return {
+              id: args.id,
+              name: args.name,
+              hotelName: args.hotelName,
+              arrivalDate: args.arrivalDate,
+              departureDate: args.departureDate
+            };
+          } else {
+            return res;
+          }
+        });
       }
     }
   }
