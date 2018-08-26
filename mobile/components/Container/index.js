@@ -1,9 +1,37 @@
 // @flow
 
-import React from "react";
+import * as React from "react";
 import { View } from "react-native";
 
-export const Container = props => (
+type ContainerType = {
+  padding?: number,
+  margin?: number,
+  paddingTop?: number,
+  paddingRight?: number,
+  paddingBottom?: number,
+  paddingLeft?: number,
+  marginTop?: number,
+  marginRight?: number,
+  marginBottom?: number,
+  marginLeft?: number,
+  flex?: number,
+  flexDirection?: string,
+  justifyContent?: string,
+  alignItems?: string,
+  alignSelf?: string,
+  backgroundColor?: string,
+  borderRadius?: number,
+  position?: string,
+  top?: number,
+  bottom?: number,
+  left?: number,
+  right?: number,
+  width?: number | string,
+  height?: number | string,
+  children?: any
+};
+
+export const Container = (props: ContainerType) => (
   <View
     style={{
       padding: props.padding,

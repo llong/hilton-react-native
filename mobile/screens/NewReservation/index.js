@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import { format } from "date-fns";
 import { Mutation } from "react-apollo";
@@ -10,8 +12,24 @@ import { DateModal } from "./components/DateModal";
 
 import { ADD_RESERVATION, FETCH_RESERVATIONS } from "../../queries";
 
-export default class NewReservationScreen extends React.Component {
-  constructor(props) {
+type State = {
+  name: string,
+  hotelName: string,
+  arrivalDate: Date,
+  departureDate: Date,
+  arrivalModalVisible: boolean,
+  departureModalVisible: boolean
+};
+
+type Props = {
+  navigation: Object
+};
+
+export default class NewReservationScreen extends React.Component<
+  Props,
+  State
+> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       name: "",
@@ -27,11 +45,11 @@ export default class NewReservationScreen extends React.Component {
     headerTitle: "New Reservation"
   };
 
-  setArrivalDate = newDate => {
+  setArrivalDate = (newDate: Date) => {
     this.setState({ arrivalDate: newDate });
   };
 
-  setDepartureDate = newDate => {
+  setDepartureDate = (newDate: Date) => {
     this.setState({ departureDate: newDate });
   };
 

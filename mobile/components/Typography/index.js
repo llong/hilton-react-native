@@ -1,12 +1,13 @@
 // @flow
 
-import React from "react";
+import * as React from "react";
 import { Text, StyleSheet } from "react-native";
 
 type Props = {
-  fontSize: number,
-  color: string,
-  fontWeight: string
+  fontSize?: number,
+  color?: string,
+  fontWeight?: any,
+  children?: string | React.Element<any>
 };
 
 export class TitleText extends React.PureComponent<Props> {
@@ -33,8 +34,7 @@ export class BodyText extends React.PureComponent<Props> {
       titleText: {
         fontSize: this.props.fontSize,
         color: this.props.color,
-        fontWeight: this.props.fontWeight,
-        textAlign: this.props.textAlign
+        fontWeight: this.props.fontWeight
       }
     });
 
@@ -44,16 +44,17 @@ export class BodyText extends React.PureComponent<Props> {
       </Text>
     );
   }
+
+  static defaultProps = {
+    BodyText: {
+      fontSize: 14,
+      color: "rgba(0,0,0,.87)",
+      fontWeight: "400"
+    },
+    TitleText: {
+      fontSize: 16,
+      color: "rgba(0,0,0,.87)",
+      fontWeight: "600"
+    }
+  };
 }
-
-BodyText.defaultProps = {
-  fontSize: 14,
-  color: "rgba(0,0,0,.87)",
-  fontWeight: "400"
-};
-
-TitleText.defaultProps = {
-  fontSize: 16,
-  color: "rgba(0,0,0,.87)",
-  fontWeight: "600"
-};

@@ -1,7 +1,11 @@
+// @flow
+
 import React from "react";
 import { StyleSheet, TextInput as Input } from "react-native";
 
-export class TextInput extends React.PureComponent {
+type Props = {};
+
+export class TextInput extends React.PureComponent<Props> {
   render() {
     return <Input {...this.props} style={styles.styledInput} />;
   }

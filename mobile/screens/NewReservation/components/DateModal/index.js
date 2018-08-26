@@ -6,7 +6,7 @@ import { Modal, DatePickerIOS } from "react-native";
 type Props = {
   modalVisible: boolean,
   title: string,
-  date: string,
+  date: Date,
   onDateChange: () => void,
   closeModal: () => void,
   buttonLabel: string
