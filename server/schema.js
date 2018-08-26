@@ -6,7 +6,8 @@ import {
   GraphQLString,
   GraphQLSchema,
   GraphQLID,
-  GraphQLList
+  GraphQLList,
+  GraphQLNonNull
 } from "graphql";
 
 // Dummy Data
@@ -71,10 +72,10 @@ const Mutation = new GraphQLObjectType({
     addReservation: {
       type: ReservationType,
       args: {
-        name: { type: GraphQLString },
-        hotelName: { type: GraphQLString },
-        arrivalDate: { type: GraphQLString },
-        departureDate: { type: GraphQLString }
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        hotelName: { type: new GraphQLNonNull(GraphQLString) },
+        arrivalDate: { type: new GraphQLNonNull(GraphQLString) },
+        departureDate: { type: new GraphQLNonNull(GraphQLString) }
       },
       resolve(parent, args) {
         const reservation = {
@@ -85,6 +86,7 @@ const Mutation = new GraphQLObjectType({
           departureDate: args.departureDate
         };
         reservations.push(reservation);
+        return reservation;
       }
     },
     removeReservation: {
