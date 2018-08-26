@@ -1,7 +1,13 @@
-import React from "react";
+// @flow
+
+import * as React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
-export class Button extends React.PureComponent {
+type Props = {
+  children: string | React.Element<any>
+};
+
+export class Button extends React.PureComponent<Props> {
   render() {
     return (
       <TouchableOpacity {...this.props} style={styles.styledButton}>
@@ -11,14 +17,30 @@ export class Button extends React.PureComponent {
   }
 }
 
+export class PrimaryButton extends React.PureComponent<Props> {
+  render() {
+    return (
+      <TouchableOpacity
+        {...this.props}
+        style={[styles.styledButton, styles.primaryButton]}
+      >
+        <Text style={styles.buttonText}>{this.props.children}</Text>
+      </TouchableOpacity>
+    );
+  }
+}
+
 const styles = StyleSheet.create({
   styledButton: {
-    backgroundColor: "rgb(0,122,255)",
+    backgroundColor: "rgba(0,0,0,.37)",
     height: 48,
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 4
+  },
+  primaryButton: {
+    backgroundColor: "rgb(0,122,255)"
   },
   buttonText: {
     color: "#FFFFFF",

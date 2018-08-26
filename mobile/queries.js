@@ -33,3 +33,15 @@ export const FETCH_RESERVATIONS = gql`
     }
   }
 `;
+
+export const CANCEL_RESERVATION = gql`
+  mutation PostMutation($id: ID!) {
+    removeReservation(id: $id) {
+      id
+      name
+      hotelName
+      arrivalDate
+      departureDate
+    }
+  }
+`;

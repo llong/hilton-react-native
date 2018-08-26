@@ -6,7 +6,7 @@ import { Mutation } from "react-apollo";
 
 import { TextInput } from "../../components/TextInput";
 import { Container } from "../../components/Container";
-import { Button } from "../../components/Button";
+import { Button, PrimaryButton } from "../../components/Button";
 
 import { DateModal } from "./components/DateModal";
 
@@ -56,7 +56,7 @@ export default class NewReservationScreen extends React.Component<
   addReservation = () => (
     <Mutation mutation={ADD_RESERVATION}>
       {(addReservation, { data }) => (
-        <Button
+        <PrimaryButton
           onPress={() => {
             addReservation({
               variables: {
@@ -80,7 +80,7 @@ export default class NewReservationScreen extends React.Component<
           }}
         >
           Add Reservation
-        </Button>
+        </PrimaryButton>
       )}
     </Mutation>
   );
